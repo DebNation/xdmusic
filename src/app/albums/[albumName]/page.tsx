@@ -12,6 +12,8 @@ import {
 import { CgSpinnerAlt } from "react-icons/cg";
 import { searchAlbums, getAlbumDetails } from "../../utils/api";
 import { useQuery, QueryClient } from "@tanstack/react-query";
+import RootLayout from "@/app/layout";
+import AlbumLayout from "../layout";
 
 interface pageProps {
   params: { albumName: string };
@@ -113,94 +115,96 @@ export default function Plyr({ params }: pageProps) {
   };
 
   return (
-    <div className="p-10">
-      {/* <div className="flex justify-center"> */}
-      {/*   <input */}
-      {/*     className="text-black bg-gray-400 rounded-md w-full mb-4 h-10 p-5" */}
-      {/*     value={albumQuery} */}
-      {/*     onChange={(e) => { */}
-      {/*       setAlbumQuery(e.target.value); */}
-      {/*     }} */}
-      {/*   /> */}
-      {/*   <FaSearch className="h-10 w-10 text-white" /> */}
-      {/* </div> */}
-      <div className="font-poppins">
-        {data ? (
-          <>
-            <div className="flex justify-center">
-              <Image
-                width={600}
-                height={500}
-                src={albumSongImage}
-                alt="image"
-                className="rounded-md"
-              />
-            </div>
-            <div className="justify-center ">
-              <audio
-                id="audio"
-                ref={audioEl}
-                src={songUrl}
-                onEnded={() => {
-                  skipToNext();
-                  setSongTime(0);
-                  setIsPlaying(true);
-                }}
-                onPause={() => setIsPlaying(false)}
-                onPlay={() => setIsPlaying(true)}
-              ></audio>
-            </div>
-            <div>
-              <p className="text-white mt-2 text-2xl">{label}</p>
-              <p className="text-gray-400 text-sm">{artistName}</p>
-            </div>
-            <div className="flex justify-center mt-5">
-              <input
-                type="range"
-                value={progress}
-                ref={progressBar}
-                max={100}
-                onChange={(e) => {
-                  e.preventDefault;
-                  onScrub(parseInt(e.target.value));
-                }}
-                className="w-full md:w-1/4 shadow-xl rounded-full"
-              />
-            </div>
+    <AlbumLayout>
+      <div className="p-10">
+        {/* <div className="flex justify-center"> */}
+        {/*   <input */}
+        {/*     className="text-black bg-gray-400 rounded-md w-full mb-4 h-10 p-5" */}
+        {/*     value={albumQuery} */}
+        {/*     onChange={(e) => { */}
+        {/*       setAlbumQuery(e.target.value); */}
+        {/*     }} */}
+        {/*   /> */}
+        {/*   <FaSearch className="h-10 w-10 text-white" /> */}
+        {/* </div> */}
+        <div className="font-poppins">
+          {data ? (
+            <>
+              <div className="flex justify-center">
+                <Image
+                  width={600}
+                  height={500}
+                  src={albumSongImage}
+                  alt="image"
+                  className="rounded-md"
+                />
+              </div>
+              <div className="justify-center ">
+                <audio
+                  id="audio"
+                  ref={audioEl}
+                  src={songUrl}
+                  onEnded={() => {
+                    skipToNext();
+                    setSongTime(0);
+                    setIsPlaying(true);
+                  }}
+                  onPause={() => setIsPlaying(false)}
+                  onPlay={() => setIsPlaying(true)}
+                ></audio>
+              </div>
+              <div>
+                <p className="text-white mt-2 text-2xl">{label}</p>
+                <p className="text-gray-400 text-sm">{artistName}</p>
+              </div>
+              <div className="flex justify-center mt-5">
+                <input
+                  type="range"
+                  value={progress}
+                  ref={progressBar}
+                  max={100}
+                  onChange={(e) => {
+                    e.preventDefault;
+                    onScrub(parseInt(e.target.value));
+                  }}
+                  className="w-full md:w-1/4 shadow-xl rounded-full"
+                />
+              </div>
 
-            <div className="text-white flex justify-between md:px-72">
-              <p>{audioEl.current?.currentTime}</p>
-              <p>{duration}</p>
-            </div>
-            <div className="flex justify-center p-10 gap-10">
-              <FaStepBackward
-                className="text-white h-10 w-10 active:text-gray-400"
-                onClick={skipBack}
-              />
-              {isPlaying ? (
-                <FaPauseCircle
-                  className="text-white  h-12 w-12 active:text-gray-400"
-                  onClick={() => setIsPlaying(false)}
+              <div className="text-white flex justify-between md:px-72">
+                <p>{audioEl.current?.currentTime}</p>
+                <p>{duration}</p>
+              </div>
+              <div className="flex justify-center p-10 gap-10">
+                <FaStepBackward
+                  className="text-white h-10 w-10 active:text-gray-400"
+                  onClick={skipBack}
                 />
-              ) : (
-                <FaPlayCircle
-                  className="text-white  h-12 w-12 active:text-gray-400"
-                  onClick={() => setIsPlaying(true)}
+                {isPlaying ? (
+                  <FaPauseCircle
+                    className="text-white  h-12 w-12 active:text-gray-400"
+                    onClick={() => setIsPlaying(false)}
+                  />
+                ) : (
+                  <FaPlayCircle
+                    className="text-white  h-12 w-12 active:text-gray-400"
+                    onClick={() => setIsPlaying(true)}
+                  />
+                )}
+                <FaStepForward
+                  className="text-white  h-10 w-10 active:text-gray-400"
+                  onClick={skipToNext}
                 />
-              )}
-              <FaStepForward
-                className="text-white  h-10 w-10 active:text-gray-400"
-                onClick={skipToNext}
-              />
-              {/* <FaVolumeMute className="text-white  h-10 w-10" /> */}
+                {/* <FaVolumeMute className="text-white  h-10 w-10" /> */}
+              </div>
+            </>
+          ) : (
+            <div className="justify-center flex">
+              <CgSpinnerAlt className="animate-spin h-10 w-10 text-white" />
             </div>
-          </>
-        ) : (
-          <div className="justify-center flex">
-            <CgSpinnerAlt className="animate-spin h-10 w-10 text-white" />
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </AlbumLayout>
   );
 }
