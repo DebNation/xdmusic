@@ -38,10 +38,12 @@ export default function Plyr({ params }: pageProps) {
   const [progress, setProgress] = useState(songTime);
 
   useEffect(() => {
-    if (isNaN(audioEl?.current?.currentTime)) {
-      setSongTime(0);
-    } else {
-      setSongTime((audioEl?.current?.currentTime / duration) * 100);
+    if (currentTime && duration) {
+      if (isNaN(currentTime)) {
+        setSongTime(0);
+      } else {
+        setSongTime((currentTime / duration) * 100);
+      }
     }
 
     const updateProgress = () => {
