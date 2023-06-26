@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CgSpinnerAlt } from "react-icons/cg";
 import { searchAlbums, getAlbumDetails } from "../../utils/api";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import Player from "@/app/components/player";
 interface pageProps {
   params: { albumName: string };
 }
-export default function Plyr({ params }: pageProps) {
+export default function AlbumsPage({ params }: pageProps) {
   let [duration, setDuration] = useState();
   const [albumSongList, setAlbumSongList] = useState([]);
   const [albumSongImage, setAlbumSongImage] = useState();
