@@ -70,7 +70,13 @@ export default function Plyr({ params }: pageProps) {
   }, [isPlaying, progress, currentTime, duration]);
 
   const onScrub = (value: number) => {
-    document.getElementById("audio").currentTime = (value * duration) / 100;
+    const audioElement = document.getElementById(
+      "audio"
+    ) as HTMLAudioElement | null;
+
+    if (audioElement && duration) {
+      audioElement.currentTime = (value * duration) / 100;
+    }
     if (progress !== currentTime) {
       if (!isPlaying) {
         setIsPlaying(!isPlaying);
@@ -85,20 +91,17 @@ export default function Plyr({ params }: pageProps) {
       const albumData = await getAlbumDetails(albumId);
       setAlbumSongImage(albumData.data.image[2].link);
       setAlbumSongList(albumData.data.songs);
-
       return albumData;
     },
   });
   useEffect(() => {
-    if (isSuccess && albumSongList) {
-      // setSongImage(albumSongList[index].image[2].link);
-      // console.log(albumSongList[index].image[2].link);
-      setSongUrl(albumSongList[index].downloadUrl[4].link);
-      setDuration(albumSongList[index].duration);
-      setLabel(albumSongList[index].name);
-      setArtistName(albumSongList[index].primaryArtists);
+    if (isSuccess) {
+      setSongUrl(data.data.songs[index].downloadUrl[4].link);
+      setDuration(data.data.songs[index].duration);
+      setLabel(data.data.songs[index].name);
+      setArtistName(data.data.songs[index].primaryArtists);
     }
-  }, [albumSongList, index, isSuccess]);
+  }, [data, index, isSuccess]);
 
   const skipToNext = () => {
     if (index === albumSongList.length - 1) {
@@ -133,13 +136,23 @@ export default function Plyr({ params }: pageProps) {
           {data ? (
             <>
               <div className="flex justify-center">
-                <Image
-                  width={600}
-                  height={500}
-                  src={albumSongImage}
-                  alt="image"
-                  className="rounded-md"
-                />
+                {albumSongImage ? (
+                  <Image
+                    width={600}
+                    height={500}
+                    src={albumSongImage}
+                    alt="image"
+                    className="rounded-md"
+                  />
+                ) : (
+                  <Image
+                    width={600}
+                    height={500}
+                    src="someimage.jpg"
+                    alt="image"
+                    className="rounded-md"
+                  />
+                )}
               </div>
               <div className="justify-center ">
                 <audio
