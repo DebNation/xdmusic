@@ -87,7 +87,7 @@ export default function Player({
   };
 
   return (
-    <div className="p-10">
+    <div className="p-10 lg:px-80">
       <div className="font-poppins">
         <div className="flex justify-center">
           {songImage ? (
@@ -122,9 +122,13 @@ export default function Player({
             onPlay={() => setIsPlaying(true)}
           ></audio>
         </div>
-        <div>
+        <div className="md:px-32 lg:px-80">
           <p className="text-white mt-2 text-2xl">{songName}</p>
-          <p className="text-gray-400 text-sm">{songArtist}</p>
+          <p className="text-gray-400 text-sm">
+            {songArtist.length > 50
+              ? songArtist.slice(0, 50) + "..."
+              : songArtist}
+          </p>
         </div>
         <div className="flex justify-center mt-5">
           <input
@@ -140,7 +144,7 @@ export default function Player({
           />
         </div>
 
-        <div className="text-white flex justify-between md:px-72">
+        <div className="text-white flex justify-between md:px-72 lg:px-96">
           {audioEl.current?.currentTime ? (
             <p>{formatDuration(audioEl.current?.currentTime * 1000)}</p>
           ) : (
