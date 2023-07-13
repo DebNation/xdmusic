@@ -180,7 +180,7 @@ export default function Search({ params }: PropTypes) {
           songUrl={data.data.results[songIndex].downloadUrl[4].link}
           songArtist={data.data.results[songIndex].primaryArtists}
           songDuration={data.data.results[songIndex].duration}
-          songList={data.data.results[songIndex]}
+          songList={data.data.results}
           skipBack={skipBack}
           skipToNext={skipToNext}
         />

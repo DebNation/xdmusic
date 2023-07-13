@@ -97,7 +97,7 @@ export default function ArtistsPage({ params }: pageProps) {
         <Player
           songUrl={data.data.results[index].downloadUrl[4].link}
           songDuration={data.data.results[index].duration}
-          songList={data.data}
+          songList={data.data.results}
           songImage={data.data.results[index].image[2].link}
           songName={data.data.results[index].name}
           songArtist={data.data.results[index].primaryArtists}

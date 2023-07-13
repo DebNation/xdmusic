@@ -10,13 +10,15 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import formatDuration from "format-duration";
+import { Item } from "./item";
+
 interface PropTypes {
   songUrl: string;
   songName: string;
   songArtist: string;
   songImage: string;
   songDuration: number;
-  songList: string[];
+  songList: Array<object>;
   skipToNext: Function;
   skipBack: Function;
 }
@@ -29,6 +31,7 @@ export default function Player({
   songDuration,
   skipToNext,
   skipBack,
+  songList,
 }: PropTypes) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioEl = useRef<HTMLAudioElement>(null);
@@ -40,6 +43,7 @@ export default function Player({
   useEffect(() => {
     //convert second to time
     setFormatDurationTime(formatDuration(songDuration * 1000));
+    console.log(songList);
     // if (currentTime && songDuration) {
     //   if (isNaN(currentTime)) {
     //     setCurrentTime(0);
@@ -152,7 +156,7 @@ export default function Player({
           )}
           <p>{formatDurationTime}</p>
         </div>
-        <div className="flex justify-center p-10 gap-10">
+        <div className="flex justify-center p-10 gap-10 bg-gray-900">
           <FaStepBackward
             className="text-white h-10 w-10 active:text-gray-400"
             onClick={() => skipBack()}
@@ -173,6 +177,11 @@ export default function Player({
             onClick={() => skipToNext()}
           />
           {/* <FaVolumeMute className="text-white  h-10 w-10" /> */}
+        </div>
+        <div className="text-white bg-gray-900">
+          {songList.map((item, index) => (
+            <Item key={index} item={item} />
+          ))}
         </div>
       </div>
     </div>
