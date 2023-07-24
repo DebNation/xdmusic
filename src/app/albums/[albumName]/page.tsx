@@ -24,6 +24,7 @@ export default function AlbumsPage({ params }: pageProps) {
     queryFn: async () => {
       const data = await searchAlbums(albumQuery);
       const albumId = data.data.results[0].id;
+      console.log(albumId);
       const albumData = await getAlbumDetails(albumId);
       setAlbumSongImage(albumData.data.image[2].link);
       setAlbumSongList(albumData.data.songs);

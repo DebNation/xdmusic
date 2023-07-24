@@ -11,7 +11,7 @@ interface pageProps {
 }
 export default function ArtistsPage({ params }: pageProps) {
   // let [duration, setDuration] = useState();
-  const [artistSongList, setArtistSongList] = useState([]);
+  const [artistSongList, setArtistSongList] = useState();
   // const [songImage, setSongImage] = useState();
   // const [artistName, setArtistName] = useState();
   // const [songUrl, setSongUrl] = useState();
@@ -31,48 +31,19 @@ export default function ArtistsPage({ params }: pageProps) {
         setPageNo(pageNo + 1);
         refetch();
       }
-      const artistData = await getArtistDetails(artistId, pageNo);
-      console.log(artistData);
-      return artistData;
+      let result: Array<object> = [];
+      for (let i = 1; i <= 10; i++) {
+        const response = await getArtistDetails(artistId, i);
+        for (let j = 0; j < 10; j++) {
+          result = [...result, response.data.results[j]];
+        }
+      }
+      console.log(result.length);
+      return result;
     },
   });
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     console.log(data);
-  //     console.log(index);
-  //     if (index === 9) {
-  //       async () => await fetchNextPage();
-  //     }
-  //     setArtistSongList(data.pages[0].data);
-  //     setSongUrl(data.pages[0].data.results[index].downloadUrl[4].link);
-  //     setDuration(data.pages[0].data.results[index].duration);
-  //     setLabel(data.pages[0].data.results[index].name);
-  //     setArtistName(data.pages[0].data.results[index].primaryArtists);
-  //     setSongImage(data.pages[0].data.results[index].image[2].link);
-  //     // if (!data.data.results[index]) {
-  //     //   console.log("error");
-  //     //   setPageNo(pageNo + 1);
-  //     //   queryClient.invalidateQueries();
-  //     // }
-  //   }
-  // }, [data, index, isSuccess, pageNo]);
-  //
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     // if (data.data.results[index] !== undefined) {
-  //     //   setPageNo(pageNo + 1);
-  //     // }
-  //     if (data.data.results[index]) {
-  //       console.log(data.data.results[index]);
-  //     } else {
-  //       setPageNo(pageNo + 1);
-  //       queryClient.invalidateQueries();
-  //     }
-  //   }
-  // }, [isSuccess, data, index, setPageNo, pageNo]);
   const skipToNext = () => {
-    if (index === artistSongList.length - 1) {
+    if (index === data.length - 1) {
       setIndex(0);
     } else {
       setIndex(index + 1);
@@ -85,7 +56,7 @@ export default function ArtistsPage({ params }: pageProps) {
 
   const skipBack = () => {
     if (index === 0) {
-      setIndex(artistSongList.length - 1);
+      setIndex(data.length - 1);
     } else {
       setIndex(index - 1);
     }
@@ -95,12 +66,12 @@ export default function ArtistsPage({ params }: pageProps) {
     <ArtistsLayout>
       {data ? (
         <Player
-          songUrl={data.data.results[index].downloadUrl[4].link}
-          songDuration={data.data.results[index].duration}
-          songList={data.data.results}
-          songImage={data.data.results[index].image[2].link}
-          songName={data.data.results[index].name}
-          songArtist={data.data.results[index].primaryArtists}
+          songUrl={data[index].downloadUrl[4].link}
+          songDuration={data[index].duration}
+          songList={data}
+          songImage={data[index].image[2].link}
+          songName={data[index].name}
+          songArtist={data[index].primaryArtists}
           skipToNext={skipToNext}
           skipBack={skipBack}
         />

@@ -2,6 +2,11 @@
 import "./styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Poppins } from "next/font/google";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import allReducers from "@/reducers";
+import albumClickedReducer from "@/reducers/albumClicked";
+import { Provider } from "react-redux";
+import setSongUrlReducer from "@/reducers/setSongUrl";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -15,6 +20,15 @@ const poppins = Poppins({
 // };
 //
 const queryClient = new QueryClient();
+const store = configureStore({
+  reducer: {
+    albumClicked: albumClickedReducer,
+    setSongUrl: setSongUrlReducer,
+  },
+});
+
+// const store = configureStore({allReducers});
+
 export default function RootLayout({
   children,
 }: {
@@ -23,7 +37,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <QueryClientProvider client={queryClient}>
-        <body className={poppins.variable}>{children}</body>
+        <Provider store={store}>
+          <body className={poppins.variable}>{children}</body>
+        </Provider>
       </QueryClientProvider>
     </html>
   );

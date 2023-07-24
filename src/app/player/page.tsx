@@ -12,17 +12,6 @@ import {
 import formatDuration from "format-duration";
 import { Item } from "./item";
 
-interface PropTypes {
-  songUrl: string;
-  songName: string;
-  songArtist: string;
-  songImage: string;
-  songDuration: number;
-  songList: Array<object>;
-  skipToNext: Function;
-  skipBack: Function;
-}
-
 export default function Player({
   songUrl,
   songName,
@@ -33,6 +22,12 @@ export default function Player({
   skipBack,
   songList,
 }: PropTypes) {
+  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
+  const [songName, SetSongName] = useState(localStorage.getItem("songUrl"));
+  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
+  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
+  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
+
   const [isPlaying, setIsPlaying] = useState(false);
   const audioEl = useRef<HTMLAudioElement>(null);
   const progressBar = useRef<HTMLInputElement>(null);
