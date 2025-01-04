@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111;
     --foreground: #ededed;
   }
 }
@@ -18,4 +18,30 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom player styles */
+.my-custom-audio-player {
+  background-color: #333333 !important; /* Dark background */
+  color: #ffffff !important; /* White text */
+}
+
+/* White buttons and timestamps */
+.my-custom-audio-player .rhap_play-pause-button,
+.my-custom-audio-player .rhap_progress-bar,
+.my-custom-audio-player .rhap_current-time,
+.my-custom-audio-player .rhap_duration {
+  color: #ffffff !important; /* White text for buttons and timestamps */
+}
+
+.my-custom-audio-player .rhap_progress-filled {
+  background-color: #4caf50 !important; /* Green progress bar */
+}
+
+.my-custom-audio-player .rhap_progress-bar {
+  background-color: #000 !important; /* Dark progress bar background */
+}
+
+.my-custom-audio-player .rhap_seekbar {
+  background-color: #777777 !important; /* Slightly lighter background for seekbar */
 }
