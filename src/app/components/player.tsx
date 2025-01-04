@@ -43,7 +43,6 @@ export default function Player({
   useEffect(() => {
     //convert second to time
     setFormatDurationTime(formatDuration(songDuration * 1000));
-    console.log(songList);
     // if (currentTime && songDuration) {
     //   if (isNaN(currentTime)) {
     //     setCurrentTime(0);
@@ -77,7 +76,7 @@ export default function Player({
 
   const onScrub = (value: number) => {
     const audioElement = document.getElementById(
-      "audio"
+      "audio",
     ) as HTMLAudioElement | null;
 
     if (audioElement && songDuration) {
@@ -106,7 +105,7 @@ export default function Player({
             <Image
               width={600}
               height={500}
-              src="someimage.jpg"
+              src=""
               alt="image"
               className="rounded-md"
             />

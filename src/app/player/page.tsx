@@ -10,7 +10,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import formatDuration from "format-duration";
-import { Item } from "./item";
+import { Item } from "../components/item";
 
 export default function Player({
   songUrl,
@@ -22,12 +22,6 @@ export default function Player({
   skipBack,
   songList,
 }: PropTypes) {
-  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
-  const [songName, SetSongName] = useState(localStorage.getItem("songUrl"));
-  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
-  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
-  const [songUrl, SetSongUrl] = useState(localStorage.getItem("songUrl"));
-
   const [isPlaying, setIsPlaying] = useState(false);
   const audioEl = useRef<HTMLAudioElement>(null);
   const progressBar = useRef<HTMLInputElement>(null);
@@ -72,7 +66,7 @@ export default function Player({
 
   const onScrub = (value: number) => {
     const audioElement = document.getElementById(
-      "audio"
+      "audio",
     ) as HTMLAudioElement | null;
 
     if (audioElement && songDuration) {
@@ -101,7 +95,7 @@ export default function Player({
             <Image
               width={600}
               height={500}
-              src="someimage.jpg"
+              src=""
               alt="image"
               className="rounded-md"
             />
@@ -175,7 +169,10 @@ export default function Player({
         </div>
         <div className="text-white bg-gray-900">
           {songList.map((item, index) => (
-            <Item key={index} item={item} />
+            <div key={index}>
+              console.log(item)
+              <Item item={item} />
+            </div>
           ))}
         </div>
       </div>

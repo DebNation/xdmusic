@@ -26,7 +26,6 @@ export default function ArtistsPage({ params }: pageProps) {
     queryFn: async () => {
       const data = await searchArtists(artistQuery);
       const artistId = data.data.results[0].id;
-      console.log(index);
       if (index >= 9) {
         setPageNo(pageNo + 1);
         refetch();
@@ -38,43 +37,47 @@ export default function ArtistsPage({ params }: pageProps) {
           result = [...result, response.data.results[j]];
         }
       }
-      console.log(result.length);
       return result;
     },
   });
   const skipToNext = () => {
-    if (index === data.length - 1) {
-      setIndex(0);
-    } else {
-      setIndex(index + 1);
-      if (index === 9) {
-        console.log("last index  reached");
-        queryClient.invalidateQueries();
+    if (data) {
+      if (index === data.length - 1) {
+        setIndex(0);
+      } else {
+        setIndex(index + 1);
+        if (index === 9) {
+          console.log("last index  reached");
+          queryClient.invalidateQueries();
+        }
       }
     }
   };
 
   const skipBack = () => {
-    if (index === 0) {
-      setIndex(data.length - 1);
-    } else {
-      setIndex(index - 1);
+    if (data) {
+      if (index === 0) {
+        setIndex(data.length - 1);
+      } else {
+        setIndex(index - 1);
+      }
     }
   };
 
   return (
     <ArtistsLayout>
       {data ? (
-        <Player
-          songUrl={data[index].downloadUrl[4].link}
-          songDuration={data[index].duration}
-          songList={data}
-          songImage={data[index].image[2].link}
-          songName={data[index].name}
-          songArtist={data[index].primaryArtists}
-          skipToNext={skipToNext}
-          skipBack={skipBack}
-        />
+        <></>
+      {/*   <Player */}
+      {/*     songUrl={data[index].downloadUrl[4].link} */}
+      {/*     songDuration={data[index].duration} */}
+      {/*     songList={data} */}
+      {/*     songImage={data[index].image[2].link} */}
+      {/*     songName={data[index].name} */}
+      {/*     songArtist={data[index].primaryArtists} */}
+      {/*     skipToNext={skipToNext} */}
+      {/*     skipBack={skipBack} */}
+      {/*   /> */}
       ) : (
         <div className="justify-center flex">
           <CgSpinnerAlt className="animate-spin h-10 w-10 text-white" />

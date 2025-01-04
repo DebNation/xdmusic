@@ -24,7 +24,6 @@ export default function Home() {
   const album = useSelector((state: RootState) => state.albumClicked);
   const songUrl = useSelector((state: RootState) => state.setSongUrl);
   const dispatch = useDispatch();
-  console.log(songUrl);
 
   const skipToNext = () => {
     if (index === songList.length - 1) {
