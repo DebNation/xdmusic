@@ -33,10 +33,6 @@ const Player: React.FC<Props> = ({
         autoPlay={false}
         showSkipControls={true}
         progressJumpSteps={{ backward: 5000, forward: 5000 }}
-        style={{
-          backgroundColor: "#333333",
-          color: "#ffffff",
-        }}
         className="my-custom-audio-player"
       />
     </div>
