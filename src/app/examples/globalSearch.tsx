@@ -1,4 +1,4 @@
-export const searchResult = {
+export const glboalSearchResult = {
   success: true,
   data: {
     topQuery: {

@@ -13,28 +13,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Search from "./comps/search";
 
 const Home = () => {
-  const [songUrl] = useState(
-    "https://aac.saavncdn.com/511/0b6fabc337a7418e905ec6223fe9be47_320.mp4",
-  );
-  const [thumbUrl] = useState(
-    "https://c.saavncdn.com/792/Tum-Bin-Hindi-2001-20221206162237-500x500.jpg",
-  );
-  const handlePlay = () => {};
-  const handlePause = () => {};
-  const handlePrevious = () => {};
-  const handleNext = () => {};
-
   const { theme, setTheme } = useTheme();
-  const [searchInput, setSearchInput] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [songList, setSongList] = useState([]);
+  const [songIndex, setSongIndex] = useState(0);
+  const [searchClicked, setSearchClicked] = useState(false);
+
+  const [isExpanded, setIsExpanded] = useState(true);
   // const { data, isPending, isError } = useQuery({
   //   queryKey: ["todos"],
   //   queryFn: getSong,
   // });
   //
   //
-  console.log(theme);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -47,12 +41,14 @@ const Home = () => {
         <div className="flex flex-col min-h-screen">
           <div className="flex justify-between items-center p-4 gap-5">
             <Input
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               placeholder="Search Song..."
               type="text"
             />
-            <Button>Search</Button>
+            <Button onClick={() => setSearchClicked(!searchClicked)}>
+              Search
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -76,19 +72,34 @@ const Home = () => {
           </div>
 
           {/* Content Section (Optional: Add your main content here) */}
-          <div className="flex-grow"></div>
-
-          {/* Bottom Section: Player */}
-          <div className="">
-            <Player
-              audioUrl={songUrl}
-              thumbUrl={thumbUrl}
-              handlePlay={handlePlay}
-              handlePause={handlePause}
-              handlePrevious={handlePrevious}
-              handleNext={handleNext}
+          <div className="flex-grow">
+            <Search
+              searchText={searchText}
+              searchClicked={searchClicked}
+              songList={songList}
+              setSongList={setSongList}
+              songIndex={songIndex}
+              setSongIndex={setSongIndex}
             />
           </div>
+
+          {/* Bottom Section: Player */}
+
+          {songList.length > 0 ? (
+            <div className="">
+              <Player
+                songList={songList}
+                songIndex={songIndex}
+                setSongIndex={setSongIndex}
+                isExpanded={isExpanded}
+                setIsExpanded={setIsExpanded}
+              />
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <div>No Music is Playing</div>
+            </div>
+          )}
         </div>
       )}
     </>
