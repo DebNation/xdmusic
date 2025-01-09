@@ -1,17 +1,30 @@
 "use client";
 import { getGlobalSearch } from "@/app/utils/api";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+// import { useState } from "react";
 import Image from "next/image";
 // import SearchLayout from "../layout";
 import { glboalSearchResult } from "../examples/globalSearch";
 import { Dispatch, SetStateAction } from "react";
+// import { Song } from "./useAudioPlayer";
+export interface SearchSong {
+  id: string;
+  title: string;
+  image: { quality: string; url: string }[];
+  album: string;
+  url: string;
+  type: string;
+  description: string;
+  primaryArtists: string;
+  singers: string;
+  language: string;
+}
 
 interface PropTypes {
   searchText: string;
   searchClicked: boolean;
   songList: object[];
-  setSongList: Dispatch<SetStateAction<object>>;
+  setSongList: React.Dispatch<React.SetStateAction<SearchSong[]>>;
   songIndex: number;
   setSongIndex: Dispatch<SetStateAction<number>>;
 }
@@ -32,6 +45,8 @@ const Search: React.FC<PropTypes> = ({
     },
     enabled: !!searchClicked,
   });
+
+  console.log(songList, songIndex);
 
   return (
     <div>
@@ -79,7 +94,7 @@ const Search: React.FC<PropTypes> = ({
             {data.songs?.results?.length > 0 && (
               <section
                 className="mb-10"
-                onClick={() => setSongList(data.songs.results)}
+                onClick={() => setSongList(data?.songs?.results)}
               >
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">Songs</h2>
                 <div className="grid gap-4">

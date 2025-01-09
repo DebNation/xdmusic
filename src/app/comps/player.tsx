@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
@@ -15,8 +14,17 @@ import { formatDuration } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAudioPlayer, PlayerProps, Song } from "./useAudioPlayer";
+import { useAudioPlayer, Song } from "./useAudioPlayer";
 import { getSongData } from "../utils/api";
+import { SearchSong } from "./search";
+
+export interface PlayerProps {
+  songList: SearchSong[];
+  songIndex: number;
+  setSongIndex: React.Dispatch<React.SetStateAction<number>>;
+  isExpanded: boolean;
+  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export default function Player({
   songList,
@@ -33,6 +41,7 @@ export default function Player({
     },
     enabled: !!songList[songIndex]?.id,
   });
+  console.log(songList, songIndex);
 
   const { isPlaying, togglePlay, progress, seek, currentTime, audioRef } =
     useAudioPlayer(song || null);
@@ -85,16 +94,26 @@ export default function Player({
                   max={100}
                   step={0.1}
                   onValueChange={(value) => seek(value[0])}
-                  className="w-full mb-2"
+                  className="cursor-pointer pb-2"
                 />
                 <div className="flex justify-between w-full text-sm mb-4">
                   <span>
                     {formatDuration({
-                      seconds: Math.floor(parseInt(currentTime)),
+                      seconds: Math.floor(
+                        typeof currentTime === "string"
+                          ? Number(currentTime)
+                          : currentTime,
+                      ),
                     })}
                   </span>
                   <span>
-                    {formatDuration({ seconds: parseInt(song.duration) })}
+                    {formatDuration({
+                      seconds: Math.floor(
+                        typeof song.duration === "string"
+                          ? Number(song.duration)
+                          : song.duration,
+                      ),
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center justify-center gap-4">

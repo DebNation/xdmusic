@@ -13,12 +13,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Search from "./comps/search";
+import Search, { SearchSong } from "./comps/search";
 
 const Home = () => {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const [searchText, setSearchText] = useState("");
-  const [songList, setSongList] = useState([]);
+  const [songList, setSongList] = useState<SearchSong[]>([]);
   const [songIndex, setSongIndex] = useState(0);
   const [searchClicked, setSearchClicked] = useState(false);
 

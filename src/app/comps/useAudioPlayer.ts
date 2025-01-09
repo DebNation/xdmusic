@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef } from "react";
 export interface Song {
   id: string;
@@ -9,7 +10,7 @@ export interface Song {
 }
 
 export interface PlayerProps {
-  songList: { id: string }[];
+  songList: Song[];
   songIndex: number;
   setSongIndex: React.Dispatch<React.SetStateAction<number>>;
   isExpanded: boolean;
