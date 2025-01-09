@@ -38,7 +38,9 @@ const Home = () => {
   return (
     <>
       {isClient && typeof window !== "undefined" && (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen overflow-hidden">
+          {" "}
+          {/* Added overflow-hidden */}
           <div className="flex justify-between items-center p-4 gap-2">
             <Input
               value={searchText}
@@ -77,9 +79,10 @@ const Home = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
           {/* Content Section (Optional: Add your main content here) */}
-          <div className="flex-grow">
+          <div className="flex-grow overflow-auto">
+            {" "}
+            {/* Ensure overflow is handled here */}
             <Search
               searchText={searchText}
               searchClicked={searchClicked}
@@ -89,10 +92,8 @@ const Home = () => {
               setSongIndex={setSongIndex}
             />
           </div>
-
           {/* Bottom Section: Player */}
-
-          {songList.length > 0 ? (
+          {songList.length > 0 && (
             <div className="">
               <Player
                 songList={songList}
@@ -101,10 +102,6 @@ const Home = () => {
                 isExpanded={isExpanded}
                 setIsExpanded={setIsExpanded}
               />
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <div>No Music is Playing</div>
             </div>
           )}
         </div>

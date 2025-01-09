@@ -42,7 +42,7 @@ const Search: React.FC<PropTypes> = ({
   songIndex,
   setSongIndex,
 }) => {
-  const { data, isPending } = useQuery<typeof glboalSearchResult.data>({
+  const { data } = useQuery<typeof glboalSearchResult.data>({
     queryKey: ["searchSongDetails", searchClicked],
     queryFn: async () => {
       const data = await getGlobalSearch(searchText);
