@@ -64,15 +64,13 @@ export default function Player({
   return (
     <Card
       className={`fixed bottom-0 left-0 right-0 mx-auto transition-all duration-300 ${
-        isExpanded
-          ? "w-full h-[70vh] max-h-[500px]"
-          : "w-full sm:w-[90%] h-20 max-w-screen-xl"
+        isExpanded ? "w-full " : "w-full max-w-screen-xl"
       }`}
     >
       <CardContent className="p-0 h-full">
         <audio ref={audioRef} />
         {isExpanded ? (
-          <div className="p-4 h-full flex flex-col">
+          <div className="p-4 h-[95vh] md:h-screen flex flex-col">
             <div className="flex justify-end mb-2">
               <Button
                 variant="ghost"
@@ -84,8 +82,8 @@ export default function Player({
             </div>
             <div className="flex-grow flex flex-col md:flex-row items-center justify-center gap-8">
               <Image
-                width={200}
-                height={200}
+                width={400}
+                height={400}
                 src={song.image[2].url}
                 alt={`${song.name} cover`}
                 className="rounded-md"
@@ -123,18 +121,36 @@ export default function Player({
                   </span>
                 </div>
                 <div className="flex items-center justify-center gap-4">
-                  <Button variant="ghost" size="icon" onClick={goToBack}>
-                    <SkipBack className="h-6 w-6" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={goToBack}
+                    style={{ height: "48px", width: "48px" }}
+                  >
+                    <SkipBack style={{ height: "32px", width: "32px" }} />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={togglePlay}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={togglePlay}
+                    style={{ height: "48px", width: "48px" }}
+                  >
                     {isPlaying ? (
-                      <Pause className="h-8 w-8" />
+                      <Pause style={{ height: "32px", width: "32px" }} />
                     ) : (
-                      <Play className="h-8 w-8" />
+                      <Play style={{ height: "32px", width: "32px" }} />
                     )}
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={goToNext}>
-                    <SkipForward className="h-6 w-6" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={goToNext}
+                    style={{ height: "48px", width: "48px" }}
+                  >
+                    <SkipForward
+                      className="h-6 w-6"
+                      style={{ height: "32px", width: "32px" }}
+                    />
                   </Button>
                 </div>
               </div>
@@ -155,17 +171,18 @@ export default function Player({
                 {song.artist}
               </p>
             </div>
+
             <Slider
               value={[progress]}
               max={100}
               step={0.1}
               onValueChange={(value) => seek(value[0])}
-              className="w-1/3 mx-4 hidden md:block "
+              className="cursor-pointer px-5 "
             />
             <Button
               variant="ghost"
               size="icon"
-              className="mr-1"
+              className="mr-1 p-2"
               onClick={togglePlay}
             >
               {isPlaying ? (
@@ -178,6 +195,7 @@ export default function Player({
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(true)}
+              className="p-2"
             >
               <Maximize2 className="h-4 w-4" />
             </Button>
