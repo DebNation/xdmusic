@@ -70,7 +70,7 @@ export default function Player({
       <CardContent className="p-0 h-full">
         <audio ref={audioRef} />
         {isExpanded ? (
-          <div className="p-4 h-[95vh] md:h-screen flex flex-col">
+          <div className="p-4 h-screen md:h-screen flex flex-col">
             <div className="flex justify-end mb-2">
               <Button
                 variant="ghost"

@@ -39,7 +39,7 @@ const Home = () => {
     <>
       {isClient && typeof window !== "undefined" && (
         <div className="flex flex-col min-h-screen">
-          <div className="flex justify-between items-center p-4 gap-5">
+          <div className="flex justify-between items-center p-4 gap-2">
             <Input
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
@@ -51,9 +51,16 @@ const Home = () => {
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  style={{ width: "55px", height: "36px" }}
+                >
+                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 " />
+                  <Moon
+                    className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+                    style={{ height: "24px", width: "24px" }}
+                  />
                   <span className="sr-only">Toggle theme</span>
                 </Button>
               </DropdownMenuTrigger>
