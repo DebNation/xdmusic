@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+
 export interface Song {
   id: string;
   name: string;
@@ -18,7 +19,7 @@ export interface PlayerProps {
 }
 
 export function useAudioPlayer(song: Song | null) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -29,8 +30,15 @@ export function useAudioPlayer(song: Song | null) {
     const audio = audioRef.current;
     if (!audio) return;
 
+    // Set the new song's source
     audio.src = song.downloadUrl[4].url;
     audio.load();
+
+    // Reset progress and play the song
+    setProgress(0);
+    setCurrentTime(0);
+    setIsPlaying(true);
+    audio.play();
 
     const updateProgress = () => {
       if (audio.duration) {
@@ -39,12 +47,16 @@ export function useAudioPlayer(song: Song | null) {
       }
     };
 
+    const handleEnded = () => setIsPlaying(false);
+
+    // Add event listeners
     audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("ended", () => setIsPlaying(false));
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
+      // Clean up event listeners
       audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("ended", () => setIsPlaying(false));
+      audio.removeEventListener("ended", handleEnded);
     };
   }, [song]);
 
@@ -59,7 +71,7 @@ export function useAudioPlayer(song: Song | null) {
     }
   }, [isPlaying]);
 
-  const togglePlay = () => setIsPlaying(!isPlaying);
+  const togglePlay = () => setIsPlaying((prev) => !prev);
 
   const seek = (value: number) => {
     const audio = audioRef.current;

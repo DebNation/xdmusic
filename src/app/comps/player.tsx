@@ -34,7 +34,7 @@ export default function Player({
   setIsExpanded,
 }: PlayerProps) {
   const { data: song } = useQuery<Song>({
-    queryKey: ["songData", songList[songIndex]?.id],
+    queryKey: ["songData", songList[songIndex]?.id, songIndex],
     queryFn: async () => {
       const data = await getSongData(songList[songIndex]?.id);
       return data.data[0];
@@ -54,6 +54,12 @@ export default function Player({
     );
 
   if (!song) return null;
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
 
   return (
     <Card
@@ -98,22 +104,22 @@ export default function Player({
                 />
                 <div className="flex justify-between w-full text-sm mb-4">
                   <span>
-                    {formatDuration({
-                      seconds: Math.floor(
+                    {formatTime(
+                      Math.floor(
                         typeof currentTime === "string"
                           ? Number(currentTime)
                           : currentTime,
                       ),
-                    })}
+                    )}
                   </span>
                   <span>
-                    {formatDuration({
-                      seconds: Math.floor(
+                    {formatTime(
+                      Math.floor(
                         typeof song.duration === "string"
                           ? Number(song.duration)
                           : song.duration,
                       ),
-                    })}
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center justify-center gap-4">
