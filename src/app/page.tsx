@@ -20,7 +20,6 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
   const [songList, setSongList] = useState<SearchSong[]>([]);
   const [songIndex, setSongIndex] = useState(0);
-  const [searchClicked, setSearchClicked] = useState(false);
 
   const [isExpanded, setIsExpanded] = useState(true);
   // const { data, isPending, isError } = useQuery({
@@ -48,9 +47,6 @@ const Home = () => {
               placeholder="Search Song..."
               type="text"
             />
-            <Button onClick={() => setSearchClicked(!searchClicked)}>
-              Search
-            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -85,7 +81,6 @@ const Home = () => {
             {/* Ensure overflow is handled here */}
             <Search
               searchText={searchText}
-              searchClicked={searchClicked}
               songList={songList}
               setSongList={setSongList}
               songIndex={songIndex}
