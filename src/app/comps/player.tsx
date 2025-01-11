@@ -47,6 +47,7 @@ export default function Player({
 
   const goToNext = () =>
     setSongIndex((prevIndex) => (prevIndex + 1) % songList.length);
+
   const goToBack = () =>
     setSongIndex(
       (prevIndex) => (prevIndex - 1 + songList.length) % songList.length,

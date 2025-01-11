@@ -37,7 +37,6 @@ export function useAudioPlayer(song: Song | null) {
     // Reset progress and play the song
     setProgress(0);
     setCurrentTime(0);
-    setIsPlaying(true);
     audio.play();
 
     const updateProgress = () => {
