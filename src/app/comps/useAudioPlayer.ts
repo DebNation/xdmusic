@@ -8,6 +8,13 @@ export interface Song {
   duration: number;
   image: { url: string }[];
   downloadUrl: { url: string }[];
+  artists: {
+    primary: [
+      {
+        name: string;
+      },
+    ];
+  };
 }
 
 export interface PlayerProps {
@@ -19,7 +26,7 @@ export interface PlayerProps {
 }
 
 export function useAudioPlayer(song: Song | null) {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -38,6 +45,7 @@ export function useAudioPlayer(song: Song | null) {
     setProgress(0);
     setCurrentTime(0);
     audio.play();
+    setIsPlaying(true);
 
     const updateProgress = () => {
       if (audio.duration) {

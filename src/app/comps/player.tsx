@@ -2,14 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Maximize2,
-  Minimize2,
-} from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +14,7 @@ import {
   songIndexAtom,
   playerExpansionAtom,
 } from "../atoms/atoms";
+import { motion } from "framer-motion";
 
 const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
@@ -56,6 +50,15 @@ const Player: React.FC = () => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
+  const handleSlideComplete = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  const concatinatedArtistNames = (song: Song) => {
+    const artistNames = song.artists.primary.map((item) => item.name);
+    const artistNamesString = artistNames.join(", ");
+    return artistNamesString;
+  };
   return (
     <Card
       className={`fixed bottom-0 left-0 right-0 mx-auto transition-all duration-300 ${
@@ -65,94 +68,109 @@ const Player: React.FC = () => {
       <CardContent className="p-0 h-full">
         <audio ref={audioRef} />
         {isExpanded ? (
-          <div className="p-4 h-screen md:h-screen flex flex-col">
-            <div className="flex justify-end mb-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsExpanded(false)}
-              >
-                <Minimize2 className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="flex-grow flex flex-col md:flex-row items-center justify-center gap-8">
-              <Image
-                width={400}
-                height={400}
-                src={song.image[2].url}
-                alt={`${song.name} cover`}
-                className="rounded-md"
-              />
-              <div className="flex flex-col w-full max-w-md">
-                <h2 className="text-2xl font-semibold mb-1">{song.name}</h2>
-                <p className="text-lg text-muted-foreground mb-4">
-                  {song.artist}
-                </p>
-                <Slider
-                  value={[progress]}
-                  max={100}
-                  step={0.1}
-                  onValueChange={(value) => seek(value[0])}
-                  className="cursor-pointer pb-2"
+          <motion.div
+            drag="y" // Enable vertical dragging
+            dragConstraints={{ top: 0, bottom: 200 }} // Constrain dragging to a specific range
+            onDragEnd={(event, info) => {
+              if (event) {
+                if (info.offset.y > 100) {
+                  handleSlideComplete();
+                }
+              }
+            }}
+          >
+            <div className="p-4 h-screen md:h-screen flex flex-col">
+              <div className="flex justify-end mb-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsExpanded(false)}
+                >
+                  <Minimize2 className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex-grow flex flex-col md:flex-row items-center justify-center gap-8">
+                <Image
+                  width={400}
+                  height={400}
+                  src={song.image[2].url}
+                  alt={`${song.name} cover`}
+                  className="rounded-md"
                 />
-                <div className="flex justify-between w-full text-sm mb-4">
-                  <span>
-                    {formatTime(
-                      Math.floor(
-                        typeof currentTime === "string"
-                          ? Number(currentTime)
-                          : currentTime,
-                      ),
-                    )}
-                  </span>
-                  <span>
-                    {formatTime(
-                      Math.floor(
-                        typeof song.duration === "string"
-                          ? Number(song.duration)
-                          : song.duration,
-                      ),
-                    )}
-                  </span>
-                </div>
-                <div className="flex items-center justify-center gap-4">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={goToBack}
-                    style={{ height: "48px", width: "48px" }}
-                  >
-                    <SkipBack style={{ height: "32px", width: "32px" }} />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={togglePlay}
-                    style={{ height: "48px", width: "48px" }}
-                  >
-                    {isPlaying ? (
-                      <Pause style={{ height: "32px", width: "32px" }} />
-                    ) : (
-                      <Play style={{ height: "32px", width: "32px" }} />
-                    )}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={goToNext}
-                    style={{ height: "48px", width: "48px" }}
-                  >
-                    <SkipForward
-                      className="h-6 w-6"
-                      style={{ height: "32px", width: "32px" }}
-                    />
-                  </Button>
+                <div className="flex flex-col w-full max-w-md">
+                  <h2 className="text-2xl font-semibold mb-1">{song.name}</h2>
+                  <p className="text-lg text-muted-foreground mb-4">
+                    {concatinatedArtistNames(song)}
+                  </p>
+                  <Slider
+                    value={[progress]}
+                    max={100}
+                    step={0.1}
+                    onValueChange={(value) => seek(value[0])}
+                    className="cursor-pointer pb-2"
+                  />
+                  <div className="flex justify-between w-full text-sm mb-4">
+                    <span>
+                      {formatTime(
+                        Math.floor(
+                          typeof currentTime === "string"
+                            ? Number(currentTime)
+                            : currentTime,
+                        ),
+                      )}
+                    </span>
+                    <span>
+                      {formatTime(
+                        Math.floor(
+                          typeof song.duration === "string"
+                            ? Number(song.duration)
+                            : song.duration,
+                        ),
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center gap-4">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={goToBack}
+                      style={{ height: "48px", width: "48px" }}
+                    >
+                      <SkipBack style={{ height: "32px", width: "32px" }} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={togglePlay}
+                      style={{ height: "48px", width: "48px" }}
+                    >
+                      {isPlaying ? (
+                        <Pause style={{ height: "32px", width: "32px" }} />
+                      ) : (
+                        <Play style={{ height: "32px", width: "32px" }} />
+                      )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={goToNext}
+                      style={{ height: "48px", width: "48px" }}
+                    >
+                      <SkipForward
+                        className="h-6 w-6"
+                        style={{ height: "32px", width: "32px" }}
+                      />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className="h-full flex items-center p-2">
+          <div
+            className="h-full flex items-center p-2"
+            onClick={() => setIsExpanded(true)}
+          >
             <Image
               width={48}
               height={48}
@@ -167,32 +185,20 @@ const Player: React.FC = () => {
               </p>
             </div>
 
-            <Slider
-              value={[progress]}
-              max={100}
-              step={0.1}
-              onValueChange={(value) => seek(value[0])}
-              className="cursor-pointer px-5 "
-            />
             <Button
               variant="ghost"
               size="icon"
               className="mr-1 p-2"
-              onClick={togglePlay}
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePlay();
+              }}
             >
               {isPlaying ? (
                 <Pause className="h-4 w-4" />
               ) : (
                 <Play className="h-4 w-4" />
               )}
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsExpanded(true)}
-              className="p-2"
-            >
-              <Maximize2 className="h-4 w-4" />
             </Button>
           </div>
         )}
