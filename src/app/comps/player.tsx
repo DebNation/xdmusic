@@ -15,23 +15,18 @@ import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAudioPlayer, Song } from "./useAudioPlayer";
 import { getSongData } from "../utils/api";
-import { SearchSong } from "./search";
+import { useAtom } from "jotai";
+import {
+  songListAtom,
+  songIndexAtom,
+  playerExpansionAtom,
+} from "../atoms/atoms";
 
-export interface PlayerProps {
-  songList: SearchSong[];
-  songIndex: number;
-  setSongIndex: React.Dispatch<React.SetStateAction<number>>;
-  isExpanded: boolean;
-  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const Player: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
+  const [songList] = useAtom(songListAtom);
+  const [songIndex, setSongIndex] = useAtom(songIndexAtom);
 
-export default function Player({
-  songList,
-  songIndex,
-  setSongIndex,
-  isExpanded,
-  setIsExpanded,
-}: PlayerProps) {
   const { data: song } = useQuery<Song>({
     queryKey: ["songData", songList[songIndex]?.id, songIndex],
     queryFn: async () => {
@@ -204,4 +199,5 @@ export default function Player({
       </CardContent>
     </Card>
   );
-}
+};
+export default Player;

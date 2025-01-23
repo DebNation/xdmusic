@@ -168,3 +168,12 @@ export const songData = {
     },
   ],
 };
+
+export const searchSongData = {
+  success: true,
+  data: [
+    {
+      id: "3IoDK8qI",
+    },
+  ],
+};

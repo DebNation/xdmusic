@@ -5,13 +5,16 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 // import SearchLayout from "../layout";
 import { glboalSearchResult } from "../examples/globalSearch";
-import { Dispatch, SetStateAction } from "react";
+// import { Dispatch, SetStateAction } from "react";
 // import { Song } from "./useAudioPlayer";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDebounce from "../hooks/useDebounce";
+import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { songListAtom, songIndexAtom } from "../atoms/atoms";
 
 export interface SearchSong {
   id: string;
@@ -28,20 +31,19 @@ export interface SearchSong {
 
 interface PropTypes {
   searchText: string;
-  songList: object[];
-  setSongList: React.Dispatch<React.SetStateAction<SearchSong[]>>;
-  songIndex: number;
-  setSongIndex: Dispatch<SetStateAction<number>>;
 }
 
-const Search: React.FC<PropTypes> = ({
-  searchText,
-  songList,
-  setSongList,
-  songIndex,
-  setSongIndex,
-}) => {
+const Search: React.FC<PropTypes> = ({ searchText }) => {
   const debouncedSearchQuery = useDebounce(searchText, 300);
+  const router = useRouter();
+
+  const [songList, setSongList] = useAtom(songListAtom);
+  const [songIndex, setSongIndex] = useAtom(songIndexAtom);
+
+  const handleAlbumClick = (id: number) => {
+    router.push(`/albums/${id}`);
+  };
+
   const { data, isFetching } = useQuery<typeof glboalSearchResult.data>({
     queryKey: ["searchSongDetails", debouncedSearchQuery],
     queryFn: async () => {
@@ -51,7 +53,7 @@ const Search: React.FC<PropTypes> = ({
     enabled: searchText ? true : false,
   });
 
-  console.log(songList, songIndex, isFetching);
+  console.log(songList, songIndex);
 
   return (
     <ScrollArea className="h-[calc(100vh-4rem)]">
@@ -141,7 +143,10 @@ const Search: React.FC<PropTypes> = ({
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Albums</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {data.albums.results.map((album) => (
-                  <Card key={album.id}>
+                  <Card
+                    key={album.id}
+                    onClick={() => handleAlbumClick(parseInt(album.id))}
+                  >
                     <CardContent className="p-0">
                       <div className="relative">
                         <Image

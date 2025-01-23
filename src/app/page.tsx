@@ -13,21 +13,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Search, { SearchSong } from "./comps/search";
+import Search from "./comps/search";
 
 const Home = () => {
   const { setTheme } = useTheme();
   const [searchText, setSearchText] = useState("");
-  const [songList, setSongList] = useState<SearchSong[]>([]);
-  const [songIndex, setSongIndex] = useState(0);
+  // const [searchSongList, setSearchSongList] = useState<SearchSong[]>([]);
+  // const [searchSongIndex, setSearchSongIndex] = useState(0);
 
-  const [isExpanded, setIsExpanded] = useState(true);
-  // const { data, isPending, isError } = useQuery({
-  //   queryKey: ["todos"],
-  //   queryFn: getSong,
-  // });
-  //
-  //
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -79,26 +72,12 @@ const Home = () => {
           <div className="flex-grow overflow-auto">
             {" "}
             {/* Ensure overflow is handled here */}
-            <Search
-              searchText={searchText}
-              songList={songList}
-              setSongList={setSongList}
-              songIndex={songIndex}
-              setSongIndex={setSongIndex}
-            />
+            <Search searchText={searchText} />
           </div>
           {/* Bottom Section: Player */}
-          {songList.length > 0 && (
-            <div className="">
-              <Player
-                songList={songList}
-                songIndex={songIndex}
-                setSongIndex={setSongIndex}
-                isExpanded={isExpanded}
-                setIsExpanded={setIsExpanded}
-              />
-            </div>
-          )}
+          <div className="">
+            <Player />
+          </div>
         </div>
       )}
     </>
