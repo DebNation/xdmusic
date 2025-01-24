@@ -7,3 +7,4 @@ import { searchSongData } from "../examples/songData";
 export const songListAtom = atom<typeof searchSongData.data>([]);
 export const songIndexAtom = atom(0);
 export const playerExpansionAtom = atom(true);
+export const playSongAtom = atom(false);

@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useAtom } from "jotai";
+import { playSongAtom } from "../atoms/atoms";
 
 export interface Song {
   id: string;
@@ -30,6 +32,7 @@ export function useAudioPlayer(song: Song | null) {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [playSong, setPlaySong] = useAtom(playSongAtom);
 
   useEffect(() => {
     if (!song) return;
@@ -41,11 +44,16 @@ export function useAudioPlayer(song: Song | null) {
     audio.src = song.downloadUrl[4].url;
     audio.load();
 
+    if (playSong) {
+      setProgress(0);
+      setCurrentTime(0);
+      audio.play();
+      setIsPlaying(true);
+    }
+
     // Reset progress and play the song
-    setProgress(0);
-    setCurrentTime(0);
-    audio.play();
-    setIsPlaying(true);
+    // setProgress(0);
+    // setCurrentTime(0);
 
     const updateProgress = () => {
       if (audio.duration) {
@@ -54,18 +62,27 @@ export function useAudioPlayer(song: Song | null) {
       }
     };
 
-    const handleEnded = () => setIsPlaying(false);
+    // const handleEnded = () => {setIsPlaying(false) setPlaySong(false)};
 
     // Add event listeners
     audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("ended", handleEnded);
+    // audio.addEventListener("ended", handleEnded);
 
     return () => {
       // Clean up event listeners
       audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("ended", handleEnded);
+      // audio.removeEventListener("ended", handleEnded);
     };
   }, [song]);
+
+  // useEffect(() => {
+  //   const audio = audioRef.current;
+  //   if (!audio) return;
+  //   if (playSong) {
+  //     audio.play();
+  //     setIsPlaying(true);
+  //   }
+  // }, [playSong]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -78,7 +95,12 @@ export function useAudioPlayer(song: Song | null) {
     }
   }, [isPlaying]);
 
-  const togglePlay = () => setIsPlaying((prev) => !prev);
+  const togglePlay = () => {
+    setIsPlaying((prev) => !prev);
+    setPlaySong((prev) => !prev);
+  };
+
+  console.log(isPlaying);
 
   const seek = (value: number) => {
     const audio = audioRef.current;

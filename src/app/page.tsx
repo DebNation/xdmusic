@@ -28,7 +28,7 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <div className="container mx-auto px-4 py-6 md:py-4">
       {isClient && typeof window !== "undefined" && (
         <div className="flex flex-col min-h-screen overflow-hidden">
           {" "}
@@ -42,16 +42,9 @@ const Home = () => {
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  style={{ width: "55px", height: "36px" }}
-                >
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 " />
-                  <Moon
-                    className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-                    style={{ height: "24px", width: "24px" }}
-                  />
+                <Button variant="outline" size="icon">
+                  <Sun className=" rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 " />
+                  <Moon className="absolute  rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                   <span className="sr-only">Toggle theme</span>
                 </Button>
               </DropdownMenuTrigger>
@@ -80,7 +73,7 @@ const Home = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

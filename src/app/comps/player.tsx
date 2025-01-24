@@ -15,6 +15,8 @@ import {
   playerExpansionAtom,
 } from "../atoms/atoms";
 import { motion } from "framer-motion";
+import { FastAverageColor } from "fast-average-color";
+import { useEffect, useState } from "react";
 
 const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
@@ -42,6 +44,25 @@ const Player: React.FC = () => {
       (prevIndex) => (prevIndex - 1 + songList.length) % songList.length,
     );
 
+  const [backgroundColor, setBackgroundColor] = useState("gray");
+
+  // Extract the dominant color from the image URL
+  useEffect(() => {
+    const fac = new FastAverageColor();
+    if (song?.image[2]?.url) {
+      fac
+        .getColorAsync(song.image[2].url, { crossOrigin: "anonymous" })
+        .then((color) => {
+          setBackgroundColor(color.hex); // Set the extracted color
+        })
+        .catch((error) => {
+          console.error("Failed to extract color:", error);
+        });
+    }
+    // Clean up on unmount
+    return () => fac.destroy();
+  }, [song?.image]);
+
   if (!song) return null;
 
   const formatTime = (seconds: number): string => {
@@ -59,6 +80,7 @@ const Player: React.FC = () => {
     const artistNamesString = artistNames.join(", ");
     return artistNamesString;
   };
+
   return (
     <Card
       className={`fixed bottom-0 left-0 right-0 mx-auto transition-all duration-300 ${
@@ -168,12 +190,15 @@ const Player: React.FC = () => {
           </motion.div>
         ) : (
           <div
-            className="h-full flex items-center p-2"
+            className="h-full flex items-center p-2 mb-1 cursor-pointer relative overflow-hidden bg-gradient-to-r rounded-md"
             onClick={() => setIsExpanded(true)}
+            style={{
+              background: `linear-gradient(to right, ${backgroundColor} ${progress}%, transparent ${progress}%)`,
+            }}
           >
             <Image
-              width={48}
-              height={48}
+              width={50}
+              height={50}
               src={song.image[2].url}
               alt={`${song.name} cover`}
               className="rounded-md mr-3"
@@ -181,10 +206,9 @@ const Player: React.FC = () => {
             <div className="flex-grow mr-2">
               <h3 className="text-sm font-medium truncate">{song.name}</h3>
               <p className="text-xs text-muted-foreground truncate">
-                {song.artist}
+                {concatinatedArtistNames(song)}
               </p>
             </div>
-
             <Button
               variant="ghost"
               size="icon"
@@ -195,9 +219,9 @@ const Player: React.FC = () => {
               }}
             >
               {isPlaying ? (
-                <Pause className="h-4 w-4" />
+                <Pause className="h-10 w-10" />
               ) : (
-                <Play className="h-4 w-4" />
+                <Play className="h-10 w-10" />
               )}
             </Button>
           </div>
