@@ -73,12 +73,36 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
     queryKey: ["searchSongDetails", debouncedSearchQuery],
     queryFn: async () => {
       const data = await getGlobalSearch(searchText);
+
+      console.log(data.data);
       return data.data;
     },
     enabled: searchText ? true : false,
   });
 
   // console.log(songList, songIndex);
+  const handleTopQueryClick = (
+    result: (typeof glboalSearchResult.data.topQuery.results)[0],
+    index: number,
+  ) => {
+    if (result.type === "artist") {
+      handleArtistClick(parseInt(result.id));
+    }
+
+    if (result.type === "album") {
+      handleAlbumClick(parseInt(result.id));
+    }
+
+    if (result.type === "playlist") {
+      handlePlaylistClick(parseInt(result.id));
+    }
+    if (result.type === "song") {
+      console.log(result);
+      setSongList([result]);
+      setSongIndex(index);
+      setPlaySong(true);
+    }
+  };
 
   return (
     <div>
@@ -108,8 +132,11 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                 <section className="mb-10">
                   {/* <h2 className="text-2xl md:text-3xl font-bold mb-4">Top Query</h2> */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {data.topQuery.results.map((result) => (
-                      <Card key={result.id}>
+                    {data.topQuery.results.map((result, index) => (
+                      <Card
+                        key={result.id}
+                        onClick={() => handleTopQueryClick(result, index)}
+                      >
                         <CardContent className="p-0">
                           <Image
                             width={300}
