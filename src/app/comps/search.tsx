@@ -18,6 +18,7 @@ import {
 import AlbumPage from "./albums";
 import { useState } from "react";
 import ArtistPage from "./artists";
+import PlaylistPage from "./playlists";
 
 export interface SearchSong {
   id: string;
@@ -46,7 +47,9 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
   const [isChildPage, setIsChildPage] = useAtom(isChildPageAtom);
   const [albumClicked, setAlbumClicked] = useState(false);
   const [artistClicked, setArtistClicked] = useState(false);
+  const [playlistClicked, setPlaylistClicked] = useState(false);
   const [artistId, setArtistId] = useState(0);
+  const [playlistId, setPlaylistId] = useState(0);
 
   const handleAlbumClick = (id: number) => {
     setAlbumId(id);
@@ -54,10 +57,16 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
     setAlbumClicked(true);
   };
 
-  const handleAristClick = (id: number) => {
+  const handleArtistClick = (id: number) => {
     setArtistId(id);
     setIsChildPage(true);
     setArtistClicked(true);
+  };
+
+  const handlePlaylistClick = (id: number) => {
+    setPlaylistId(id);
+    setIsChildPage(true);
+    setPlaylistClicked(true);
   };
 
   const { data, isFetching } = useQuery<typeof glboalSearchResult.data>({
@@ -69,7 +78,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
     enabled: searchText ? true : false,
   });
 
-  console.log(songList, songIndex);
+  // console.log(songList, songIndex);
 
   return (
     <div>
@@ -78,6 +87,13 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
       )}
       {isChildPage && artistClicked && (
         <ArtistPage artistId={artistId} setArtistClicked={setArtistClicked} />
+      )}
+
+      {isChildPage && playlistClicked && (
+        <PlaylistPage
+          playlistId={playlistId}
+          setPlaylistClicked={setPlaylistClicked}
+        />
       )}
       {!isChildPage && !artistClicked && !albumClicked && (
         <ScrollArea className="h-[calc(100vh-4rem)]">
@@ -212,7 +228,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                     {data.artists.results.map((artist) => (
                       <Card
                         key={artist.id}
-                        onClick={() => handleAristClick(parseInt(artist.id))}
+                        onClick={() => handleArtistClick(parseInt(artist.id))}
                       >
                         <CardContent className="p-0">
                           <div className="relative">
@@ -244,7 +260,12 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     {data.playlists.results.map((playlist) => (
-                      <Card key={playlist.id}>
+                      <Card
+                        key={playlist.id}
+                        onClick={() =>
+                          handlePlaylistClick(parseInt(playlist.id))
+                        }
+                      >
                         <CardContent className="p-0">
                           <div className="relative">
                             <Image

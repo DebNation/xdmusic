@@ -31,7 +31,6 @@ const Player: React.FC = () => {
     },
     enabled: !!songList[songIndex]?.id,
   });
-  console.log(songList, songIndex);
 
   const { isPlaying, togglePlay, progress, seek, currentTime, audioRef } =
     useAudioPlayer(song || null);

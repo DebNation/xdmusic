@@ -101,8 +101,6 @@ export function useAudioPlayer(song: Song | null) {
     setPlaySong((prev) => !prev);
   };
 
-  console.log(isPlaying);
-
   const seek = (value: number) => {
     const audio = audioRef.current;
     if (audio) {

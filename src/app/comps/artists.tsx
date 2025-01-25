@@ -34,16 +34,12 @@ const ArtistPage: React.FC<PropTypes> = ({ artistId, setArtistClicked }) => {
   }
 
   const { data, isFetching } = useQuery<typeof albumData.data>({
-    queryKey: ["albumDetails"],
+    queryKey: ["artistDetails"],
     queryFn: async () => {
       const data = await getArtistSongs(artistId);
       return data.data;
     },
   });
-  console.log(data);
-
-  console.log(songList, songIndex);
-
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
       <div>

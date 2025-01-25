@@ -16,6 +16,11 @@ export async function getAlbumDetails(id: number) {
   return response.data;
 }
 
+export async function getPlaylistDetails(id: number) {
+  const response = await saavnApi.get(`/api/playlists?id=${id}&limit=100`);
+  return response.data;
+}
+
 export async function getArtistSongs(id: number) {
   const response = await saavnApi.get(`/api/artists/${id}/songs`);
   return response.data;
