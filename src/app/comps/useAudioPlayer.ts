@@ -33,6 +33,7 @@ export function useAudioPlayer(song: Song | null) {
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playSong, setPlaySong] = useAtom(playSongAtom);
+  const [isEnded, setIsEnded] = useState(false);
 
   useEffect(() => {
     if (!song) return;
@@ -66,7 +67,7 @@ export function useAudioPlayer(song: Song | null) {
 
     // Add event listeners
     audio.addEventListener("timeupdate", updateProgress);
-    // audio.addEventListener("ended", handleEnded);
+    // audio.addEventListener("ended", setIsEnded(true));
 
     return () => {
       // Clean up event listeners

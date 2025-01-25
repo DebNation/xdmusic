@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { getAlbumDetails } from "./../utils/api";
+import { getAlbumDetails, getArtistSongs } from "./../utils/api";
 import albumData from "../examples/exmapleAlbumData";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -18,28 +18,29 @@ import { ChevronLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PropTypes {
-  albumId: number;
-  setAlbumClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  artistId: number;
+  setArtistClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
+const ArtistPage: React.FC<PropTypes> = ({ artistId, setArtistClicked }) => {
   const router = useRouter();
   const [songList, setSongList] = useAtom(songListAtom);
   const [songIndex, setSongIndex] = useAtom(songIndexAtom);
   const [playSong, setPlaySong] = useAtom(playSongAtom);
   const [isChildPage, setIsChildPage] = useAtom(isChildPageAtom);
 
-  if (!albumId) {
+  if (!artistId) {
     router.push("/");
   }
 
   const { data, isFetching } = useQuery<typeof albumData.data>({
     queryKey: ["albumDetails"],
     queryFn: async () => {
-      const data = await getAlbumDetails(albumId);
+      const data = await getArtistSongs(artistId);
       return data.data;
     },
   });
+  console.log(data);
 
   console.log(songList, songIndex);
 
@@ -89,14 +90,14 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
                 size="icon"
                 className="mb-4"
                 onClick={() => {
-                  setAlbumClicked(false);
                   setIsChildPage(false);
+                  setArtistClicked(false);
                 }}
               >
                 <ChevronLeft />
               </Button>
               <div className="grid gap-4">
-                {data.songs.map((song, index) => (
+                {data?.songs?.map((song, index) => (
                   <Card
                     key={song.id}
                     onClick={() => {
@@ -136,4 +137,4 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
   );
 };
 
-export default AlbumPage;
+export default ArtistPage;

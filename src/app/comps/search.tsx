@@ -9,9 +9,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDebounce from "../hooks/useDebounce";
 import { useAtom } from "jotai";
-import { songListAtom, songIndexAtom, playSongAtom } from "../atoms/atoms";
+import {
+  songListAtom,
+  songIndexAtom,
+  playSongAtom,
+  isChildPageAtom,
+} from "../atoms/atoms";
 import AlbumPage from "./albums";
 import { useState } from "react";
+import ArtistPage from "./artists";
 
 export interface SearchSong {
   id: string;
@@ -37,11 +43,21 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
   const [songIndex, setSongIndex] = useAtom(songIndexAtom);
   const [playSong, setPlaySong] = useAtom(playSongAtom);
   const [albumId, setAlbumId] = useState(0);
-
+  const [isChildPage, setIsChildPage] = useAtom(isChildPageAtom);
   const [albumClicked, setAlbumClicked] = useState(false);
+  const [artistClicked, setArtistClicked] = useState(false);
+  const [artistId, setArtistId] = useState(0);
+
   const handleAlbumClick = (id: number) => {
     setAlbumId(id);
+    setIsChildPage(true);
     setAlbumClicked(true);
+  };
+
+  const handleAristClick = (id: number) => {
+    setArtistId(id);
+    setIsChildPage(true);
+    setArtistClicked(true);
   };
 
   const { data, isFetching } = useQuery<typeof glboalSearchResult.data>({
@@ -57,7 +73,13 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
 
   return (
     <div>
-      {!albumClicked ? (
+      {isChildPage && albumClicked && (
+        <AlbumPage albumId={albumId} setAlbumClicked={setAlbumClicked} />
+      )}
+      {isChildPage && artistClicked && (
+        <ArtistPage artistId={artistId} setArtistClicked={setArtistClicked} />
+      )}
+      {!isChildPage && !artistClicked && !albumClicked && (
         <ScrollArea className="h-[calc(100vh-4rem)]">
           {data && searchText !== "" && (
             <div className="container mx-auto px-4 py-6 md:py-8">
@@ -188,7 +210,10 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     {data.artists.results.map((artist) => (
-                      <Card key={artist.id}>
+                      <Card
+                        key={artist.id}
+                        onClick={() => handleAristClick(parseInt(artist.id))}
+                      >
                         <CardContent className="p-0">
                           <div className="relative">
                             <Image
@@ -250,7 +275,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
               )}
             </div>
           )}
-          {isFetching && (
+          {isFetching && !isChildPage && !artistClicked && !albumClicked && (
             <div className="container mx-auto px-4 py-6 md:py-8">
               <h1 className="text-3xl md:text-4xl font-extrabold mb-8 md:mb-10">
                 <Skeleton className="h-8 w-2/3" />
@@ -318,8 +343,6 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
             </div>
           )}
         </ScrollArea>
-      ) : (
-        <AlbumPage albumId={albumId} setAlbumClicked={setAlbumClicked} />
       )}
     </div>
   );

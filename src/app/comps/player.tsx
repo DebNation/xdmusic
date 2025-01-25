@@ -46,6 +46,12 @@ const Player: React.FC = () => {
 
   const [backgroundColor, setBackgroundColor] = useState("gray");
 
+  useEffect(() => {
+    if (progress === 100) {
+      setSongIndex((prevIndex) => (prevIndex + 1) % songList.length);
+    }
+  }, [progress, songList.length, setSongIndex]);
+
   // Extract the dominant color from the image URL
   useEffect(() => {
     const fac = new FastAverageColor();

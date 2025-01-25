@@ -16,6 +16,11 @@ export async function getAlbumDetails(id: number) {
   return response.data;
 }
 
+export async function getArtistSongs(id: number) {
+  const response = await saavnApi.get(`/api/artists/${id}/songs`);
+  return response.data;
+}
+
 export async function searchArtists(query: string) {
   const response = await saavnApi.get("/api/search/artists?query=" + query);
   return response.data;
