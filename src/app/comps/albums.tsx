@@ -79,7 +79,27 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
       </div>
       {data && (
         <div>
-          {data?.songs?.length > 0 && (
+          {data?.songs?.length < 1 ? (
+            <section className="mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                {data?.name}
+              </h2>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="mb-4"
+                onClick={() => {
+                  setIsChildPage(false);
+                  setAlbumClicked(false);
+                }}
+              >
+                <ChevronLeft />
+              </Button>
+              <h2 className="text-2xl md:text-2xl text-gray-400 mb-4 text-center font-serif">
+                No Song found!
+              </h2>
+            </section>
+          ) : (
             <section className="mb-10">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 {data?.name}
