@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { getArtistSongs } from "./../utils/api";
+import { getArtistDetails, getArtistSongs } from "./../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import exampleArtistData from "../examples/exmapleArtistData";
+import exampleArtistDetails from "../examples/exampleArtistDetails";
 
 interface PropTypes {
   artistId: number;
@@ -34,18 +35,30 @@ const ArtistPage: React.FC<PropTypes> = ({ artistId, setArtistClicked }) => {
   }
 
   const { data, isFetching } = useQuery<typeof exampleArtistData.data>({
-    queryKey: ["artistDetails"],
+    queryKey: ["artistSongs"],
     queryFn: async () => {
       const data = await getArtistSongs(artistId);
       return data.data;
     },
   });
 
-  console.log(data);
+  const { data: artist, isFetching: isArtistFetching } = useQuery<
+    typeof exampleArtistDetails.data
+  >({
+    queryKey: ["artistDetails"],
+    queryFn: async () => {
+      const data = await getArtistDetails(artistId);
+      return data.data;
+    },
+  });
+
+  console.log(artist);
+
+  console.log("artist", data);
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
       <div>
-        {isFetching && (
+        {isArtistFetching && isFetching && (
           <div className="container mx-auto px-4 py-6 md:py-8">
             <div>
               {/* Title Skeleton */}
@@ -76,12 +89,12 @@ const ArtistPage: React.FC<PropTypes> = ({ artistId, setArtistClicked }) => {
           </div>
         )}
       </div>
-      {data && (
+      {artist && data && (
         <div>
           {data?.songs?.length > 0 && (
             <section className="mb-10">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                {data?.name}
+                {artist.name}
               </h2>
               <Button
                 variant="secondary"

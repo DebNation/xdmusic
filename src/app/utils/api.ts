@@ -26,17 +26,22 @@ export async function getArtistSongs(id: number) {
   return response.data;
 }
 
+export async function getArtistDetails(id: number) {
+  const response = await saavnApi.get(`/api/artists/${id}`);
+  return response.data;
+}
+
 export async function searchArtists(query: string) {
   const response = await saavnApi.get("/api/search/artists?query=" + query);
   return response.data;
 }
 
-export async function getArtistDetails(id: number, pageNo: number) {
-  const response = await saavnApi.get(
-    `/api/artists/${id}/songs?page=${pageNo}`,
-  );
-  return response.data;
-}
+// export async function getArtistDetails(id: number, pageNo: number) {
+//   const response = await saavnApi.get(
+//     `/api/artists/${id}/songs?page=${pageNo}`,
+//   );
+//   return response.data;
+// }
 
 export async function SearchSong(query: string) {
   const response = await saavnApi.get(
