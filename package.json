@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "fast-average-color": "^9.4.0",
     "framer-motion": "^12.0.1",
+    "he": "^1.2.0",
     "jotai": "^2.11.1",
     "lucide-react": "^0.469.0",
     "next": "15.1.3",

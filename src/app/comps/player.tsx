@@ -17,6 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { FastAverageColor } from "fast-average-color";
 import { useEffect, useState } from "react";
+import he from "he";
 
 const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
@@ -83,7 +84,8 @@ const Player: React.FC = () => {
   const concatinatedArtistNames = (song: Song) => {
     const artistNames = song.artists.primary.map((item) => item.name);
     const artistNamesString = artistNames.join(", ");
-    return artistNamesString;
+    const decodedArtist = he.decode(artistNamesString);
+    return decodedArtist;
   };
 
   return (

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { getAlbumDetails, getArtistSongs } from "./../utils/api";
-import albumData from "../examples/exmapleAlbumData";
+import { getArtistSongs } from "./../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import exampleArtistData from "../examples/exmapleArtistData";
 
 interface PropTypes {
   artistId: number;
@@ -33,13 +33,15 @@ const ArtistPage: React.FC<PropTypes> = ({ artistId, setArtistClicked }) => {
     router.push("/");
   }
 
-  const { data, isFetching } = useQuery<typeof albumData.data>({
+  const { data, isFetching } = useQuery<typeof exampleArtistData.data>({
     queryKey: ["artistDetails"],
     queryFn: async () => {
       const data = await getArtistSongs(artistId);
       return data.data;
     },
   });
+
+  console.log(data);
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
       <div>

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { getPlaylistDetails } from "./../utils/api";
-import albumData from "../examples/exmapleAlbumData";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import examplePlaylistData from "../examples/exmaplePlaylistData";
 
 interface PropTypes {
   playlistId: number;
@@ -36,7 +36,7 @@ const PlaylistPage: React.FC<PropTypes> = ({
     router.push("/");
   }
 
-  const { data, isFetching } = useQuery<typeof albumData.data>({
+  const { data, isFetching } = useQuery<typeof examplePlaylistData.data>({
     queryKey: ["playlistDetails"],
     queryFn: async () => {
       const data = await getPlaylistDetails(playlistId);
@@ -122,8 +122,9 @@ const PlaylistPage: React.FC<PropTypes> = ({
                         <h3 className="text-base font-semibold mb-1">
                           {song.name}
                         </h3>
+
                         <p className="text-sm text-muted-foreground">
-                          {song.artists.primary[0].name}
+                          {data.artists[0].name}
                         </p>
                       </div>
                     </CardContent>
