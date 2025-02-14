@@ -127,7 +127,10 @@ const Player: React.FC = () => {
                   className="rounded-md"
                 />
                 <div className="flex flex-col w-full max-w-md">
-                  <h2 className="text-2xl font-semibold mb-1">{song.name}</h2>
+                  <h2 className="text-2xl font-semibold mb-1">
+                    {he.decode(song.name)}
+                  </h2>
+
                   <p className="text-lg text-muted-foreground mb-4">
                     {concatinatedArtistNames(song)}
                   </p>
@@ -211,7 +214,9 @@ const Player: React.FC = () => {
               className="rounded-md mr-3"
             />
             <div className="flex-grow mr-2">
-              <h3 className="text-sm font-medium truncate">{song.name}</h3>
+              <h3 className="text-sm font-medium truncate">
+                {he.decode(song.name)}
+              </h3>
               <p className="text-xs text-muted-foreground truncate">
                 {concatinatedArtistNames(song)}
               </p>

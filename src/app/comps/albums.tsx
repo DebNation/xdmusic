@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import he from "he";
 
 interface PropTypes {
   albumId: number;
@@ -138,10 +139,10 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
                       </div>
                       <div className="p-4 flex-grow">
                         <h3 className="text-base font-semibold mb-1">
-                          {song.name}
+                          {he.decode(song.name)}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {song.artists.primary[0].name}
+                          {he.decode(song.artists.primary[0].name)}
                         </p>
                       </div>
                     </CardContent>
