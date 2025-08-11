@@ -2,7 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { Play, Pause, SkipBack, SkipForward, Minimize2 } from "lucide-react";
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Minimize2,
+  ArrowDownToLine,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +25,7 @@ import { motion } from "framer-motion";
 import { FastAverageColor } from "fast-average-color";
 import { useEffect, useState } from "react";
 import he from "he";
+import { preinitModule } from "react-dom";
 
 const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
@@ -86,6 +94,24 @@ const Player: React.FC = () => {
     const artistNamesString = artistNames.join(", ");
     const decodedArtist = he.decode(artistNamesString);
     return decodedArtist;
+  };
+  const downloadSong = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename || "download";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Clean up the URL object
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   return (
@@ -161,7 +187,7 @@ const Player: React.FC = () => {
                       )}
                     </span>
                   </div>
-                  <div className="flex items-center justify-center gap-4">
+                  <div className="flex items-center justify-center gap-4 relative">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -189,6 +215,21 @@ const Player: React.FC = () => {
                       style={{ height: "48px", width: "48px" }}
                     >
                       <SkipForward
+                        className="h-6 w-6"
+                        style={{ height: "32px", width: "32px" }}
+                      />
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      style={{ height: "48px", width: "48px" }}
+                      onClick={() =>
+                        downloadSong(song.downloadUrl[4].url, song.name)
+                      }
+                      className="absolute right-0"
+                    >
+                      <ArrowDownToLine
                         className="h-6 w-6"
                         style={{ height: "32px", width: "32px" }}
                       />
