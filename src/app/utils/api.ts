@@ -21,8 +21,10 @@ export async function getPlaylistDetails(id: number) {
   return response.data;
 }
 
-export async function getArtistSongs(id: number) {
-  const response = await saavnApi.get(`/api/artists/${id}/songs`);
+export async function getArtistSongs(id: number, pageNo: number) {
+  const response = await saavnApi.get(
+    `/api/artists/${id}/songs?page=${pageNo}`,
+  );
   return response.data;
 }
 
