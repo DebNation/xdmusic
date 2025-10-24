@@ -46,6 +46,7 @@ export function useAudioPlayer(song: Song | null) {
     audio.load();
 
     if (playSong) {
+      audio.volume = parseFloat(localStorage.getItem("volume") || "1.0");
       setProgress(0);
       setCurrentTime(0);
       audio.play();
@@ -90,6 +91,7 @@ export function useAudioPlayer(song: Song | null) {
     if (!audio) return;
 
     if (isPlaying) {
+      audio.volume = parseFloat(localStorage.getItem("volume") || "1.0");
       audio.play();
     } else {
       audio.pause();

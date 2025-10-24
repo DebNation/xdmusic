@@ -33,15 +33,7 @@ const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
   const [songList] = useAtom(songListAtom);
   const [songIndex, setSongIndex] = useAtom(songIndexAtom);
-  const [volume, setVolume] = useState(1.0);
-
-  const handleVolumeChange = (value: number) => {
-    const newVolume = value;
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-  };
+  const [volume, setVolume] = useState(localStorage.getItem("volume") || "1.0");
 
   const { data: song } = useQuery<Song>({
     queryKey: ["songData", songList[songIndex]?.id, songIndex],
@@ -64,6 +56,15 @@ const Player: React.FC = () => {
     );
 
   const [backgroundColor, setBackgroundColor] = useState("gray");
+
+  const handleVolumeChange = (value: number) => {
+    const newVolume = value;
+    setVolume(`${newVolume}`);
+    localStorage.setItem("volume", `${newVolume}`);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
 
   useEffect(() => {
     if (progress === 100) {
@@ -201,9 +202,9 @@ const Player: React.FC = () => {
 
                   <div className="flex items-center justify-center gap-4 relative">
                     <div className="flex items-center gap-2">
-                      {volume === 0 ? <VolumeX /> : <Volume2 />}
+                      {parseFloat(volume) === 0 ? <VolumeX /> : <Volume2 />}
                       <Slider
-                        value={[volume]}
+                        value={[parseFloat(volume)]}
                         max={1.0}
                         step={0.01}
                         onValueChange={(value) => handleVolumeChange(value[0])}
