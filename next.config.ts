@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.jiosaavn.com",
       },
+      {
+        protocol: "https",
+        hostname: "jiosaavn-api.debiprasadxd-41e.workers.dev",
+      },
     ],
   },
 };

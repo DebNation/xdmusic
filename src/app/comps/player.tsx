@@ -25,12 +25,23 @@ import { motion } from "framer-motion";
 import { FastAverageColor } from "fast-average-color";
 import { useEffect, useState } from "react";
 import he from "he";
-import { preinitModule } from "react-dom";
+import { Volume2, VolumeX } from "lucide-react";
+
+// import { preinitModule } from "react-dom";
 
 const Player: React.FC = () => {
   const [isExpanded, setIsExpanded] = useAtom(playerExpansionAtom);
   const [songList] = useAtom(songListAtom);
   const [songIndex, setSongIndex] = useAtom(songIndexAtom);
+  const [volume, setVolume] = useState(1.0);
+
+  const handleVolumeChange = (value: number) => {
+    const newVolume = value;
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
 
   const { data: song } = useQuery<Song>({
     queryKey: ["songData", songList[songIndex]?.id, songIndex],
@@ -187,7 +198,18 @@ const Player: React.FC = () => {
                       )}
                     </span>
                   </div>
+
                   <div className="flex items-center justify-center gap-4 relative">
+                    <div className="flex items-center gap-2">
+                      {volume === 0 ? <VolumeX /> : <Volume2 />}
+                      <Slider
+                        value={[volume]}
+                        max={1.0}
+                        step={0.01}
+                        onValueChange={(value) => handleVolumeChange(value[0])}
+                        className="cursor-pointer w-24"
+                      />
+                    </div>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -228,9 +250,14 @@ const Player: React.FC = () => {
                         downloadSong(song.downloadUrl[4].url, song.name)
                       }
                       className="absolute right-0"
+                    ></Button>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      style={{ height: "48px", width: "48px" }}
                     >
                       <ArrowDownToLine
-                        className="h-6 w-6"
                         style={{ height: "32px", width: "32px" }}
                       />
                     </Button>
