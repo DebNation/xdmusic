@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const saavnApi = axios.create({
-  baseURL: "https://saavn.dev",
+  baseURL: "https://jiosaavn-api.debiprasadxd-41e.workers.dev",
   headers: {
     "Content-Type": "application/json",
   },
