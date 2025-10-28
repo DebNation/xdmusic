@@ -61,7 +61,7 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
                 {Array.from({ length: 5 }).map((_, index) => (
                   <div
                     key={index}
-                    className="flex items-center p-0 cursor-pointer hover:bg-accent transition-colors duration-200"
+                    className="flex items-center cursor-pointer hover:bg-accent transition-colors duration-200"
                   >
                     {/* Image Skeleton */}
                     <Skeleton className="w-20 h-20 rounded-l-lg flex-shrink-0" />
@@ -127,7 +127,7 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
                     }}
                     className="cursor-pointer hover:bg-accent transition-colors duration-200"
                   >
-                    <CardContent className="p-0 flex items-center">
+                    <CardContent className="flex items-center">
                       <div className="relative flex-shrink-0">
                         <Image
                           width={80}
@@ -137,7 +137,7 @@ const AlbumPage: React.FC<PropTypes> = ({ albumId, setAlbumClicked }) => {
                           className="w-20 h-20 object-cover rounded-l-lg"
                         />
                       </div>
-                      <div className="p-4 flex-grow">
+                      <div className="px-2 flex-grow">
                         <h3 className="text-base font-semibold mb-1">
                           {he.decode(song.name)}
                         </h3>

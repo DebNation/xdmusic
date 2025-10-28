@@ -138,7 +138,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                         key={result.id}
                         onClick={() => handleTopQueryClick(result, index)}
                       >
-                        <CardContent className="p-0">
+                        <CardContent className="">
                           <Image
                             width={300}
                             height={300}
@@ -146,7 +146,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                             src={result.image[2].url}
                             className="w-full aspect-square object-cover rounded-t-lg"
                           />
-                          <div className="p-4">
+                          <div className="py-2">
                             <h3 className="text-lg font-bold mb-2 line-clamp-1">
                               {he.decode(result.title)}
                             </h3>
@@ -176,7 +176,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                         }}
                         className="cursor-pointer hover:bg-accent transition-colors duration-200"
                       >
-                        <CardContent className="p-0 flex items-center">
+                        <CardContent className="flex items-center">
                           <div className="relative flex-shrink-0">
                             <Image
                               width={80}
@@ -186,7 +186,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                               className="w-20 h-20 object-cover rounded-l-lg"
                             />
                           </div>
-                          <div className="p-4 flex-grow">
+                          <div className="px-2 flex-grow">
                             <h3 className="text-base font-semibold mb-1">
                               {he.decode(song.title)}
                             </h3>
@@ -218,7 +218,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                         key={album.id}
                         onClick={() => handleAlbumClick(parseInt(album.id))}
                       >
-                        <CardContent className="p-0">
+                        <CardContent className="">
                           <div className="relative">
                             <Image
                               width={300}
@@ -228,7 +228,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                               className="w-full aspect-square object-cover rounded-t-lg"
                             />
                           </div>
-                          <div className="p-3">
+                          <div className="py-2">
                             <h3 className="text-sm font-semibold mb-1 line-clamp-1">
                               {album.title}
                             </h3>
@@ -258,7 +258,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                         key={artist.id}
                         onClick={() => handleArtistClick(parseInt(artist.id))}
                       >
-                        <CardContent className="p-0">
+                        <CardContent className="">
                           <div className="relative">
                             <Image
                               width={200}
@@ -268,7 +268,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                               className="w-full aspect-square object-cover rounded-t-lg"
                             />
                           </div>
-                          <div className="p-3 text-center">
+                          <div className="py-2 text-center">
                             <h3 className="text-sm font-semibold line-clamp-1">
                               {artist.title}
                             </h3>
@@ -294,7 +294,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                           handlePlaylistClick(parseInt(playlist.id))
                         }
                       >
-                        <CardContent className="p-0">
+                        <CardContent className="">
                           <div className="relative">
                             <Image
                               width={300}
@@ -304,7 +304,7 @@ const Search: React.FC<PropTypes> = ({ searchText }) => {
                               className="w-full aspect-square object-cover rounded-t-lg"
                             />
                           </div>
-                          <div className="p-3">
+                          <div className="py-3">
                             <h3 className="text-sm font-semibold">
                               <Link
                                 href={playlist.url || "#"}
