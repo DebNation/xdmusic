@@ -8,7 +8,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "xdmusic-cloudflare",
+	"name": "xdmusic",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2025-10-08",
 	"compatibility_flags": [
